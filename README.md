@@ -31,9 +31,8 @@ bot-disparador-whatsapp/
 │  └─ enviar.js           # Script principal de disparo
 ├─ package.json           # Dependências e scripts npm
 ├─ package-lock.json
-└─ .gitignore```
-
----
+└─ .gitignore
+````
 
 ## 3. Pré-requisitos
 Antes de rodar o bot, é importante garantir que o ambiente está preparado.
@@ -47,8 +46,9 @@ Arquivo Envios.xlsx configurado com os contatos e mensagens.
 
 Dependências instaladas com:
 
-bash
+```bash
 npm install
+```
 
 ## 4. Planilha de envios (Envios.xlsx)
 A planilha é o coração do disparador, pois é dela que o bot lê cada envio.
@@ -73,9 +73,10 @@ Coloque todos os arquivos que serão enviados na pasta arquivos/.
 
 No terminal, dentro da pasta do projeto, rode:
 
-bash
+```bash
 node js/enviar.js
 No primeiro uso, será exibido um QR Code no terminal.
+```
 
 No WhatsApp do celular, vá em Aparelhos conectados e escaneie o QR.
 
