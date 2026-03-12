@@ -1,12 +1,15 @@
+Segue o README do disparador, inteiro já numerado e organizado, pronto para colar no README.md:
+
+text
 # Bot Disparador de WhatsApp
 
-Automação em Node.js para envio de mensagens em massa de forma controlada, lendo contatos e mensagens de planilhas e aplicando delays aleatórios para parecer o mais humano possível.
+Automação em Node.js para envio de mensagens em massa de forma controlada, lendo contatos e mensagens de planilhas e aplicando atrasos aleatórios para parecer o mais humano possível.
 
 ---
 
 ## 1. Visão geral
 
-O bot disparador foi criado para campanhas de envio em lote, mas com foco em segurança, personalização e controle de ritmo.  
+O bot disparador foi criado para campanhas de envio em lote, com foco em segurança, personalização e controle de ritmo.  
 Ele lê uma planilha com contatos, monta mensagens personalizadas e envia texto e arquivos respeitando limites configuráveis.
 
 - Baseado em **Node.js** com a biblioteca `whatsapp-web.js`.
@@ -30,7 +33,7 @@ bot-disparador-whatsapp/
 ├─ package-lock.json
 └─ .gitignore
 
-
+## 3. Pré-requisitos
 Antes de rodar o bot, é importante garantir que o ambiente está preparado.
 Com esses itens prontos, a configuração e a execução ficam bem mais tranquilas.
 
@@ -45,19 +48,20 @@ Dependências instaladas com:
 bash
 npm install
 
-4. Planilha de envios (Envios.xlsx)
+## 4. Planilha de envios (Envios.xlsx)
 A planilha é o coração do disparador, pois é dela que o bot lê cada envio.
 Cada linha representa um contato com suas próprias informações e, opcionalmente, um arquivo para anexar.
 
 Campos recomendados:
-| Campo    | Descrição                                                          |
-| -------- | ------------------------------------------------------------------ |
-| nome     | Nome do contato utilizado na personalização da mensagem.           |
-| telefone | Número completo com DDI e DDD, apenas dígitos (ex: 5511999999999). |
-| mensagem | Texto base que será enviado para o contato.                        |
-| arquivo  | Nome do arquivo dentro da pasta arquivos/ (ex: oferta.pdf).        |
 
-5. Como rodar o disparador
+Campo	Descrição
+nome	Nome do contato utilizado na personalização da mensagem.
+telefone	Número completo com DDI e DDD, apenas dígitos (ex: 5511999999999).
+mensagem	Texto base que será enviado para o contato.
+arquivo	Nome do arquivo dentro da pasta arquivos/ (ex: oferta.pdf).
+Dica: se você usar a palavra fulano dentro da mensagem, o código substitui esse trecho automaticamente pelo valor do campo nome.
+
+## 5. Como rodar o disparador
 Aqui está o passo a passo para sair da configuração e partir para o envio.
 Seguindo essa ordem, fica mais fácil evitar erros e entender onde algo pode ter falhado.
 
@@ -75,7 +79,7 @@ No WhatsApp do celular, vá em Aparelhos conectados e escaneie o QR.
 
 Após a conexão, o bot começa a processar linha por linha da planilha, enviando mensagem e, quando configurado, o arquivo.
 
-6. Delays e comportamento do disparo
+## 6. Delays e comportamento do disparo
 Os delays são responsáveis por deixar o comportamento mais natural e menos “robótico”.
 Eles controlam o tempo entre a mensagem de texto, o envio de arquivo e o próximo contato.
 
@@ -93,7 +97,7 @@ Evite valores muito baixos em campanhas grandes.
 
 Faça pequenos testes antes de usar em listas grandes.
 
-7. Logs e acompanhamento
+## 7. Logs e acompanhamento
 Enquanto o bot roda, ele mostra no terminal tudo o que está acontecendo.
 Esses logs são essenciais para entender o fluxo e identificar qualquer problema.
 
@@ -109,7 +113,7 @@ Tempo estimado de espera até o próximo contato.
 
 Mensagens de erro com detalhes, quando acontecerem.
 
-8. Integração com o aquecedor
+## 8. Integração com o aquecedor
 O disparador funciona ainda melhor quando usado em conjunto com o bot aquecedor.
 A ideia é não sair disparando em massa com números frios e sem histórico.
 
@@ -121,7 +125,7 @@ Depois de alguns dias de aquecimento, inicie envios leves com o disparador.
 
 Aumente o volume gradualmente, sempre monitorando respostas, bloqueios e métricas.
 
-9. Boas práticas e responsabilidade
+## 9. Boas práticas e responsabilidade
 Automação com WhatsApp exige cuidado e responsabilidade.
 Seguir boas práticas aumenta a durabilidade das contas e protege a reputação do seu número.
 
@@ -133,13 +137,15 @@ Evite spam e disparos agressivos em horários inadequados.
 
 Proteja os dados pessoais armazenados nas planilhas e arquivos.
 
-10. Fale comigo no WhatsApp
-Se você quiser suporte, customização ou ajuda para adaptar este projeto ao seu cenário, pode falar diretamente comigo.
+## 10. Fale comigo no WhatsApp
+
+Se você quiser suporte, customização ou ajuda para adaptar este projeto ao seu cenário, pode falar diretamente comigo.  
 Clique no botão abaixo para abrir uma conversa no WhatsApp:
 
-Falar no WhatsApp
+[![WhatsApp - Clique aqui](https://img.shields.io/badge/WhatsApp-CLIQUE%20AQUI-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/5511960621180)
 
-11. Contribuição
+
+## 11. Contribuição
 Este projeto foi pensado para ser evolutivo e aberto a ideias.
 Se você tiver sugestões, melhorias ou encontrar algum problema, sua contribuição é muito bem‑vinda.
 
