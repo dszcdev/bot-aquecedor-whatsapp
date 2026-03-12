@@ -1,0 +1,36 @@
+{
+  "contatos": [
+    { "id": "chip1", "numero": "5511954709483@c.us" },
+    { "id": "chip2", "numero": "5511960621180@c.us" }
+  ],
+  "mensagens": {
+    "perguntas": [
+      "E ai, tudo certo por ai? 😊",
+      "Boa tarde, como ta o dia por ai?",
+      "Ta de boa ai hoje ou ta na correria? 😅",
+      "Trabalhando muito ou ta tranquilo por enquanto?",
+      "Ja viu as noticias hoje? 🤔",
+      "Hey, how is your day going so far?",
+      "Whats up? Tudo em paz por ai?",
+      "Bom diaaa, ja tomou cafe? ☕",
+      "Mano, viu aquele meme que mandei mais cedo? kkkkk",
+      "Bro, are you ready for this week? 💪"
+    ],
+    "respostas": [
+      "Tudo tranquilo e voce? 🙌",
+      "Correria mas ta indo kkk 😅",
+      "To de boa por enquanto, so acompanhando aqui.",
+      "Rapaz, ta puxado hoje mas faz parte 😂",
+      "Vi sim, ta complicado ne...",
+      "Im fine, and you? 😄",
+      "Tamo junto, qualquer coisa chama ai.",
+      "Rachei de rir daquele meme kkkkk 🤣",
+      "To cansado mas sobrevivendo kkk",
+      "Yeah, looks like a busy week ahead 😅"
+    ]
+  },
+  "config": {
+    "delayMinMinutos": 2,
+    "delayMaxMinutos": 10
+  }
+}
