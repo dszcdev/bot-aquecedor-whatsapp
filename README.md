@@ -144,9 +144,9 @@ Proteja os dados pessoais armazenados nas planilhas e arquivos.
 
 Se você quiser suporte, customização ou ajuda para adaptar este projeto ao seu cenário, pode falar diretamente comigo.  
 Clique no botão abaixo para abrir uma conversa no WhatsApp:
-
+```
 [![WhatsApp - Clique aqui](https://img.shields.io/badge/WhatsApp-CLIQUE%20AQUI-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/5511960621180)
-
+```
 
 ## 11. Contribuição
 Este projeto foi pensado para ser evolutivo e aberto a ideias.
