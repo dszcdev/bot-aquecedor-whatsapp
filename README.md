@@ -1,117 +1,153 @@
-3. Pré-requisitos
+# Bot Disparador de WhatsApp
+
+Automação em Node.js para envio de mensagens em massa de forma controlada, lendo contatos e mensagens de planilhas e aplicando delays aleatórios para parecer o mais humano possível.
+
+---
+
+## 1. Visão geral
+
+O bot disparador foi criado para campanhas de envio em lote, mas com foco em segurança, personalização e controle de ritmo.  
+Ele lê uma planilha com contatos, monta mensagens personalizadas e envia texto e arquivos respeitando limites configuráveis.
+
+- Baseado em **Node.js** com a biblioteca `whatsapp-web.js`.
+- Ideal para uso após o aquecimento dos chips com o bot aquecedor.
+- Pensado para ser simples de configurar e fácil de ajustar.
+
+---
+
+## 2. Estrutura do projeto
+
+Nesta seção você enxerga a organização dos arquivos principais do disparador.  
+Ela ajuda a entender rapidamente onde configurar planilha, arquivos e script de envio.
+
+```text
+bot-disparador-whatsapp/
+├─ arquivos/              # PDFs, imagens, vídeos para envio
+├─ Envios.xlsx            # Planilha com contatos e mensagens
+├─ js/
+│  └─ enviar.js           # Script principal de disparo
+├─ package.json           # Dependências e scripts npm
+├─ package-lock.json
+└─ .gitignore
+
+
+Antes de rodar o bot, é importante garantir que o ambiente está preparado.
+Com esses itens prontos, a configuração e a execução ficam bem mais tranquilas.
+
 Node.js instalado (versão LTS recomendada).
 
-Conta(s) de WhatsApp ativas para usar no aquecedor.
+Conta de WhatsApp ativa no celular.
 
-Navegador atualizado para ler o QR Code na primeira conexão.
+Arquivo Envios.xlsx configurado com os contatos e mensagens.
 
-Instale as dependências:
+Dependências instaladas com:
 
 bash
 npm install
-4. Arquivo conversas.json
-Aqui você configura quem conversa com quem, quais mensagens são usadas e os intervalos de tempo.
 
-Exemplo enxuto:
+4. Planilha de envios (Envios.xlsx)
+A planilha é o coração do disparador, pois é dela que o bot lê cada envio.
+Cada linha representa um contato com suas próprias informações e, opcionalmente, um arquivo para anexar.
 
-json
-{
-  "contatos": [
-    { "id": "chip1", "numero": "5511999999999@c.us" },
-    { "id": "chip2", "numero": "5511888888888@c.us" }
-  ],
-  "mensagens": {
-    "perguntas": [
-      "E aí, tudo certo por aí?",
-      "Boa tarde, como tá o dia?",
-      "Trabalhando muito ou tá tranquilo?"
-    ],
-    "respostas": [
-      "Tudo tranquilo e você?",
-      "Correria, mas tá indo kkk",
-      "Tô de boa por enquanto"
-    ]
-  },
-  "config": {
-    "delayMinMinutos": 2,
-    "delayMaxMinutos": 10
-  }
-}
-contatos: lista de números que vão participar das conversas.
+Campos recomendados:
+| Campo    | Descrição                                                          |
+| -------- | ------------------------------------------------------------------ |
+| nome     | Nome do contato utilizado na personalização da mensagem.           |
+| telefone | Número completo com DDI e DDD, apenas dígitos (ex: 5511999999999). |
+| mensagem | Texto base que será enviado para o contato.                        |
+| arquivo  | Nome do arquivo dentro da pasta arquivos/ (ex: oferta.pdf).        |
 
-mensagens.perguntas e mensagens.respostas: variações para deixar o fluxo menos repetitivo.
+5. Como rodar o disparador
+Aqui está o passo a passo para sair da configuração e partir para o envio.
+Seguindo essa ordem, fica mais fácil evitar erros e entender onde algo pode ter falhado.
 
-config: intervalo mínimo e máximo entre mensagens (em minutos).
+Confirme que Envios.xlsx está na raiz do projeto e com as colunas corretas.
 
-5. Como rodar o aquecedor
-Com as dependências instaladas, rode:
+Coloque todos os arquivos que serão enviados na pasta arquivos/.
+
+No terminal, dentro da pasta do projeto, rode:
 
 bash
-node js/aquecedor.js
-No primeiro uso, o terminal vai mostrar um QR Code.
+node js/enviar.js
+No primeiro uso, será exibido um QR Code no terminal.
 
-Abra o WhatsApp no celular, vá em Aparelhos conectados e escaneie o QR.
+No WhatsApp do celular, vá em Aparelhos conectados e escaneie o QR.
 
-Depois de conectado, o bot começa a enviar/receber mensagens conforme o conversas.json.
+Após a conexão, o bot começa a processar linha por linha da planilha, enviando mensagem e, quando configurado, o arquivo.
 
-Se fechar o terminal ou reiniciar a máquina, é só rodar o comando novamente e escanear (ou reaproveitar a sessão, se configurado com LocalAuth).
+6. Delays e comportamento do disparo
+Os delays são responsáveis por deixar o comportamento mais natural e menos “robótico”.
+Eles controlam o tempo entre a mensagem de texto, o envio de arquivo e o próximo contato.
 
-6. Configurações importantes (delays e comportamento)
-No código do bot você encontrará funções responsáveis pelos delays e pelo comportamento mais humano, por exemplo:
+Exemplo de trechos de configuração de delay no código:
 
 js
-function gerarDelayAleatorio(minSegundos, maxSegundos) {
-  const min = minSegundos * 1000;
-  const max = maxSegundos * 1000;
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-Algumas boas práticas ao ajustar:
+const delayAposMensagem = gerarDelayAleatorio(3, 7);     // segundos entre texto e arquivo
+const delayAposArquivo = gerarDelayAleatorio(5, 10);     // segundos após envio de arquivo
+const delayEntreContatos = gerarDelayAleatorio(60, 120); // segundos entre um contato e outro
+Boas práticas ao ajustar:
 
-Use delays maiores no início (mais “devagar” é mais seguro).
+Para números novos ou pouco aquecidos, use delays maiores.
 
-Evite valores fixos; sempre trabalhe com intervalo mínimo e máximo.
+Evite valores muito baixos em campanhas grandes.
 
-Simule pausas entre contatos, não dispare tudo em sequência.
+Faça pequenos testes antes de usar em listas grandes.
 
 7. Logs e acompanhamento
-Durante a execução, o terminal mostra:
+Enquanto o bot roda, ele mostra no terminal tudo o que está acontecendo.
+Esses logs são essenciais para entender o fluxo e identificar qualquer problema.
 
-Contato atual sendo processado.
+Você verá informações como:
 
-Número formatado que está recebendo mensagem.
+Contato atual (nome e telefone) sendo processado.
 
-Mensagens enviadas e possíveis erros.
+Mensagens enviadas com sucesso ou falhas.
 
-Tempo de espera até o próximo contato.
+Arquivo encontrado ou ausente na pasta arquivos/.
 
-Isso ajuda a entender o comportamento do bot e identificar qualquer problema rapidamente.
+Tempo estimado de espera até o próximo contato.
 
-8. Próximos passos
-Ajustar os delays conforme o perfil de uso e o risco que você aceita.
+Mensagens de erro com detalhes, quando acontecerem.
 
-Testar o aquecedor em chips diferentes antes de escalar o volume.
+8. Integração com o aquecedor
+O disparador funciona ainda melhor quando usado em conjunto com o bot aquecedor.
+A ideia é não sair disparando em massa com números frios e sem histórico.
 
-Integrar este projeto ao disparador para campanhas completas de envio.
+Fluxo recomendado:
 
-Criar novos scripts de conversa personalizados para cada público.
+Use o bot aquecedor para criar histórico de conversa nos chips.
 
-9. Boas práticas
-Comece sempre com poucos contatos e aumente aos poucos.
+Depois de alguns dias de aquecimento, inicie envios leves com o disparador.
 
-Teste em ambiente controlado antes de colocar em produção.
+Aumente o volume gradualmente, sempre monitorando respostas, bloqueios e métricas.
 
-Respeite as regras do WhatsApp e a privacidade dos usuários.
+9. Boas práticas e responsabilidade
+Automação com WhatsApp exige cuidado e responsabilidade.
+Seguir boas práticas aumenta a durabilidade das contas e protege a reputação do seu número.
 
-Mantenha dependências, Node.js e documentação atualizados.
+Respeite as políticas oficiais do WhatsApp.
 
-10. Contribuição
-Curtiu o projeto e quer melhorar algo?
+Trabalhe com listas de contatos que aceitaram receber mensagens.
 
-Abra uma issue com dúvidas, ideias ou problemas encontrados.
+Evite spam e disparos agressivos em horários inadequados.
 
-Envie pull requests com melhorias de código ou de documentação.
+Proteja os dados pessoais armazenados nas planilhas e arquivos.
 
-Faça um fork e adapte o projeto para o seu cenário.
+10. Fale comigo no WhatsApp
+Se você quiser suporte, customização ou ajuda para adaptar este projeto ao seu cenário, pode falar diretamente comigo.
+Clique no botão abaixo para abrir uma conversa no WhatsApp:
 
-Obrigado por acompanhar o desenvolvimento deste bot.
-Bons testes e bons aquecimentos de conta! 🚀
+Falar no WhatsApp
+
+11. Contribuição
+Este projeto foi pensado para ser evolutivo e aberto a ideias.
+Se você tiver sugestões, melhorias ou encontrar algum problema, sua contribuição é muito bem‑vinda.
+
+Abra issues com dúvidas, ideias ou bugs.
+
+Envie pull requests com melhorias de código ou documentação.
+
+Faça um fork e crie sua própria versão, adaptando para o seu contexto.
+
+Obrigado por acompanhar o desenvolvimento deste bot disparador.
+Bons disparos, com consciência e estratégia! 🚀
