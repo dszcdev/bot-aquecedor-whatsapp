@@ -31,7 +31,9 @@ bot-disparador-whatsapp/
 │  └─ enviar.js           # Script principal de disparo
 ├─ package.json           # Dependências e scripts npm
 ├─ package-lock.json
-└─ .gitignore
+└─ .gitignore```
+
+---
 
 ## 3. Pré-requisitos
 Antes de rodar o bot, é importante garantir que o ambiente está preparado.
