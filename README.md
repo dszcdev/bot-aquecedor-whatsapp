@@ -1,176 +1,117 @@
-# Bot Aquecedor de WhatsApp
+3. Pré-requisitos
+Node.js instalado (versão LTS recomendada).
 
-Projeto em Node.js para aquecimento automático de chips de WhatsApp, simulando conversas humanas entre múltiplos números usando a biblioteca `whatsapp-web.js`.  
-O objetivo é gerar histórico de uso natural (envio e recebimento de mensagens) antes de utilizar o número em campanhas mais pesadas.
+Conta(s) de WhatsApp ativas para usar no aquecedor.
 
----
+Navegador atualizado para ler o QR Code na primeira conexão.
 
-## Visão geral
-
-- Conversas automáticas entre números de aquecimento (chips) definidos em arquivo de configuração.
-- Mensagens variadas em português e inglês, com emojis e temas diferentes para reduzir padrões.
-- Intervalos de envio configurados em sequência crescente (30s, 45s, 1min, 1,5min, 2min, 3min), simulando ritmo humano.
-- Cada instância do bot representa um chip, e todos conversam apenas entre si, sem envolver outros contatos da agenda.
-
----
-
-## Tecnologias usadas
-
-- **Node.js**
-- **whatsapp-web.js**
-- **qrcode-terminal**
-
----
-
-## Estrutura de arquivos
-
-- `aquecer.js`  
-  Arquivo principal do bot aquecedor.  
-  - Lê as configurações do `conversas.json`.  
-  - Conecta ao WhatsApp com `LocalAuth` usando um `clientId` (chip1, chip2, etc.).  
-  - Inicia um loop infinito enviando mensagens para outros chips de aquecimento.
-
-- `conversas.json`  
-  Arquivo de configuração das conversas.  
-  - Define os chips que participam do aquecimento (`contatos`).  
-  - Define as listas de mensagens de **perguntas** e **respostas**.  
-  - Pode ser expandido com novos chips e novas frases a qualquer momento.
-
-- `package.json`  
-  Dependências e scripts do projeto em Node.js.
-
-> Pastas de sessão (`.wwebjs_auth`, `.wwebjs_cache`) **não devem** ser versionadas.  
-> Elas são criadas localmente pelo `whatsapp-web.js` após o login e ficam apenas na sua máquina.
-
----
-
-## Arquivo de configuração (`conversas.json`)
-
-Exemplo de configuração básica para dois chips:
-
-```json
-{
-  "contatos": [
-    { "id": "chip1", "numero": "5511954709483@c.us" },
-    { "id": "chip2", "numero": "5511960621180@c.us" }
-  ],
-  "mensagens": {
-    "perguntas": [
-      "E ai, tudo certo por ai? 😊",
-      "Boa tarde, como ta o dia por ai?",
-      "Ta de boa ai hoje ou ta na correria? 😅",
-      "Trabalhando muito ou ta tranquilo por enquanto?",
-      "Ja viu as noticias hoje? 🤔",
-      "Hey, how is your day going so far?",
-      "Whats up? Tudo em paz por ai?",
-      "Bom diaaa, ja tomou cafe? ☕",
-      "Mano, viu aquele meme que mandei mais cedo? kkkkk",
-      "Bro, are you ready for this week? 💪"
-    ],
-    "respostas": [
-      "Tudo tranquilo e voce? 🙌",
-      "Correria mas ta indo kkk 😅",
-      "To de boa por enquanto, so acompanhando aqui.",
-      "Rapaz, ta puxado hoje mas faz parte 😂",
-      "Vi sim, ta complicado ne...",
-      "Im fine, and you? 😄",
-      "Tamo junto, qualquer coisa chama ai.",
-      "Rachei de rir daquele meme kkkkk 🤣",
-      "To cansado mas sobrevivendo kkk",
-      "Yeah, looks like a busy week ahead 😅"
-    ]
-  }
-}
-contatos: lista de chips que vão participar do aquecimento.
-
-id: identificador usado na linha de comando (chip1, chip2, chip3...).
-
-numero: número completo do WhatsApp no formato DDI + DDD + número@c.us.
-
-mensagens.perguntas e mensagens.respostas:
-
-Listas de frases que serão escolhidas aleatoriamente a cada envio.
-
-É recomendado ir adicionando novas frases com o tempo para aumentar a variedade.
-
-Como instalar
-Clonar o repositório:
-
-bash
-git clone https://github.com/dszcdev/bot-aquecedor-whatsapp.git
-cd bot-aquecedor-whatsapp
-Instalar as dependências:
+Instale as dependências:
 
 bash
 npm install
-Como configurar os chips
-Edite o arquivo conversas.json e ajuste a seção contatos com os números dos seus chips de aquecimento:
+4. Arquivo conversas.json
+Aqui você configura quem conversa com quem, quais mensagens são usadas e os intervalos de tempo.
+
+Exemplo enxuto:
 
 json
-"contatos": [
-  { "id": "chip1", "numero": "55DDDNUMERO1@c.us" },
-  { "id": "chip2", "numero": "55DDDNUMERO2@c.us" }
-]
-Adicione mais chips se necessário:
+{
+  "contatos": [
+    { "id": "chip1", "numero": "5511999999999@c.us" },
+    { "id": "chip2", "numero": "5511888888888@c.us" }
+  ],
+  "mensagens": {
+    "perguntas": [
+      "E aí, tudo certo por aí?",
+      "Boa tarde, como tá o dia?",
+      "Trabalhando muito ou tá tranquilo?"
+    ],
+    "respostas": [
+      "Tudo tranquilo e você?",
+      "Correria, mas tá indo kkk",
+      "Tô de boa por enquanto"
+    ]
+  },
+  "config": {
+    "delayMinMinutos": 2,
+    "delayMaxMinutos": 10
+  }
+}
+contatos: lista de números que vão participar das conversas.
 
-json
-{ "id": "chip3", "numero": "55DDDNUMERO3@c.us" }
-Todos os chips listados irão conversar apenas entre si.
+mensagens.perguntas e mensagens.respostas: variações para deixar o fluxo menos repetitivo.
 
-Como executar o aquecedor
-Cada instância do bot representa um chip.
-Abra um terminal para cada chip e execute:
+config: intervalo mínimo e máximo entre mensagens (em minutos).
+
+5. Como rodar o aquecedor
+Com as dependências instaladas, rode:
 
 bash
-node aquecer.js chip1
-Depois, em outro terminal:
+node js/aquecedor.js
+No primeiro uso, o terminal vai mostrar um QR Code.
 
-bash
-node aquecer.js chip2
-Para o primeiro login de cada clientId:
+Abra o WhatsApp no celular, vá em Aparelhos conectados e escaneie o QR.
 
-Um QR Code será exibido no terminal.
+Depois de conectado, o bot começa a enviar/receber mensagens conforme o conversas.json.
 
-Escaneie com o aplicativo WhatsApp do chip correspondente.
+Se fechar o terminal ou reiniciar a máquina, é só rodar o comando novamente e escanear (ou reaproveitar a sessão, se configurado com LocalAuth).
 
-Após autenticado, o bot começa a enviar mensagens automaticamente para os outros chips configurados.
+6. Configurações importantes (delays e comportamento)
+No código do bot você encontrará funções responsáveis pelos delays e pelo comportamento mais humano, por exemplo:
 
-Lógica de envio
-A cada iteração:
+js
+function gerarDelayAleatorio(minSegundos, maxSegundos) {
+  const min = minSegundos * 1000;
+  const max = maxSegundos * 1000;
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+Algumas boas práticas ao ajustar:
 
-Escolhe um dos outros chips da lista como destinatário.
+Use delays maiores no início (mais “devagar” é mais seguro).
 
-Decide aleatoriamente se envia uma pergunta ou resposta.
+Evite valores fixos; sempre trabalhe com intervalo mínimo e máximo.
 
-Escolhe uma frase aleatória da lista correspondente.
+Simule pausas entre contatos, não dispare tudo em sequência.
 
-Aguarda um delay em sequência: 30s, 45s, 1min, 1,5min, 2min, 3min e repete o ciclo.
+7. Logs e acompanhamento
+Durante a execução, o terminal mostra:
 
-Isso cria um fluxo de conversa mais natural, com variação de tema, idioma e tempo de resposta.
+Contato atual sendo processado.
 
-Boas práticas e avisos
-Use este projeto apenas em ambiente de testes ou para fins educacionais.
+Número formatado que está recebendo mensagem.
 
-Evite volumes altos de mensagens em números novos para reduzir risco de bloqueio pelo WhatsApp.
+Mensagens enviadas e possíveis erros.
 
-Sempre mantenha espaço livre nos aparelhos (memória cheia pode derrubar a sessão do WhatsApp Web).
+Tempo de espera até o próximo contato.
 
-Nunca suba para o GitHub:
+Isso ajuda a entender o comportamento do bot e identificar qualquer problema rapidamente.
 
-Pastas de sessão (.wwebjs_auth, .wwebjs_cache).
+8. Próximos passos
+Ajustar os delays conforme o perfil de uso e o risco que você aceita.
 
-Prints ou arquivos com QR Code.
+Testar o aquecedor em chips diferentes antes de escalar o volume.
 
----
+Integrar este projeto ao disparador para campanhas completas de envio.
 
-## Visual do projeto
+Criar novos scripts de conversa personalizados para cada público.
 
-<p align="center">
-  <!-- Quando tiver um GIF ou imagem animada, troque o link abaixo -->
-  <img src="https://raw.githubusercontent.com/dszcdev/bot-whatsapp-envio/main/.github/assets/animacao-exemplo.gif" alt="Animação do bot aquecedor em ação" width="480" />
-</p>
+9. Boas práticas
+Comece sempre com poucos contatos e aumente aos poucos.
 
-<p align="center">
-  <em>Em breve: animação/GIF mostrando os chips conversando entre si em tempo real.</em>
-</p>
+Teste em ambiente controlado antes de colocar em produção.
 
+Respeite as regras do WhatsApp e a privacidade dos usuários.
+
+Mantenha dependências, Node.js e documentação atualizados.
+
+10. Contribuição
+Curtiu o projeto e quer melhorar algo?
+
+Abra uma issue com dúvidas, ideias ou problemas encontrados.
+
+Envie pull requests com melhorias de código ou de documentação.
+
+Faça um fork e adapte o projeto para o seu cenário.
+
+Obrigado por acompanhar o desenvolvimento deste bot.
+Bons testes e bons aquecimentos de conta! 🚀
